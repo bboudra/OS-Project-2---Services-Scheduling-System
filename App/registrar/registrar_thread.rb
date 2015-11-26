@@ -1,0 +1,2 @@
+class RegistrarThread
+end

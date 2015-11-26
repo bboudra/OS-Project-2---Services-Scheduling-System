@@ -1,0 +1,2 @@
+class RegistrarDriver
+end
