@@ -3,6 +3,9 @@ Feature: Client views available times
   I want to see the available times
   So that I may find a time to register for a service that fits my schedule
 
+  Background: Make client
+    Given I am a client
+
   Scenario: Client successfully views available times
     Given The available times for the date '12/27/2016' are from '2' to '4'
     When I ask to view the available times for the date '12/27/2016' for an appoint length of '1' hour
@@ -13,5 +16,3 @@ Feature: Client views available times
       | 1:30            |
       | 1:45            |
       | 2:00            |
-
-

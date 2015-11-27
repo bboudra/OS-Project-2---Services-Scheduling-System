@@ -6,7 +6,7 @@ class Client
 
   end
 
-  def convert_time_to_float(string_time_to_military_time_float)
+  def convert_time_to_military_float(string_time_to_military_time_float)
 
   end
 end
