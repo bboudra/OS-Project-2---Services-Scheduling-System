@@ -8,7 +8,7 @@ Given(/^The available times for the date '(\d+)\/(\d+)\/(\d+)' are from '(\d+)' 
   start_time = @client.convert_time_to_military_float(arg4)
   end_time = @client.convert_time_to_military_float(arg4)
   @client.get_date_doctor_appt_length_from_user("#{arg1}/#{arg2}/#{arg3}",arg4,arg5)
-  @client.make_appointment("#{arg1}/#{arg2}/#{arg3}",6.0-,start_time- 6.0)
+  @client.make_appointment("#{arg1}/#{arg2}/#{arg3}",6.0,start_time- 6.0)
   @client.make_appointment("#{arg1}/#{arg2}/#{arg3}",2.0,20.0-end_time)
 end
 
