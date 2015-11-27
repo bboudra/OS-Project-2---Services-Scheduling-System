@@ -1,9 +1,5 @@
 require_relative '../../../App/client/client'
 
-#Background
-Given(/^I am a client who wishes to use the system$/) do
-  @client = Client.new
-end
 
 Given(/^I attempt to register for an appointment after the date\-time combination is past the current date\-time$/) do
   pending # Write code here that turns the phrase above into concrete actions
