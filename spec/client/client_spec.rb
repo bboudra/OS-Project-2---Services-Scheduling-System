@@ -31,7 +31,7 @@ describe Client do
     end
   end
 
-  describe 'valid_range' do
+  describe 'valid_time?' do
     context 'time is in valid range and on the hour' do
       it 'should be a valid time' do
         expect(@client).to be_valid_time(10.00)
