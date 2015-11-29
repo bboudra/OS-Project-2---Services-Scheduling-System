@@ -26,7 +26,7 @@ class Client
   #   - The message stating whether or not the appointment was successful.
   def make_appointment(date = nil,doctors_office = nil,start_time = nil, appointment_length = nil)
     list = get_availability_information_from_user
-    message = list.insert(1,'Get Availability Information')
+    message = list.insert(1,'VIEW TIMES')
     message.push("End Of Message")
     result_message = get_available_times(message)
     choice = get_user_time_choice(result_message)
@@ -84,9 +84,11 @@ class Client
     message.each do |line|
       @s.puts(line)
     end
-    line = ""
     response_message = []
+    line = ""
     until line == "End Of Message"
+      line = @s.gets.chomp
+      puts "#{line}"
       response_message.push(line)
     end
     return response_message

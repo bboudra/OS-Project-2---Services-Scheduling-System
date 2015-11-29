@@ -1,6 +1,5 @@
 require_relative '../../App/client/client'
 require_relative '../../lib/utilities/utilities'
-require_relative '../../lib/shared/doctors'
 require_relative '../../lib/shared/appointments'
 require 'date'
 require 'rspec'
@@ -148,6 +147,7 @@ describe Client do
       end
     end
   end
+=begin
   describe 'valid_doctor?' do
     before(:each) do
       @util = Utilities.new
@@ -184,7 +184,7 @@ describe Client do
       end
     end
   end
-
+=end
   describe 'valid_appointment_type?' do
     before(:each) do
       @util = Utilities.new
@@ -219,5 +219,4 @@ describe Client do
       end
     end
   end
-
 end

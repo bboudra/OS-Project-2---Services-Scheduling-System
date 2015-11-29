@@ -25,7 +25,7 @@ class Day
   end
 
   def is_free_time_slot(current_time_slot, appointment_length)
-    appointment_time_slots = appointment_length / 0.25
+    appointment_time_slots = (appointment_length / 0.25).to_i
     current_time_slot.upto(current_time_slot + (appointment_time_slots)) do |x|
       if @times.length + 32 < x
         return false

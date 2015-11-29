@@ -7,4 +7,4 @@ class ClientDriver
   end
 end
 
-ClientDriver.new.start_run
+ClientDriver.new.start_run()
