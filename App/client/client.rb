@@ -33,12 +33,12 @@ class Client
     if choice == -1
       return make_appointment
     end
-    @s.puts(list[0])
-    @s.puts('SET APPOINTMENT')
-    @s.puts(message[2])
-    @s.puts(message[3])
-    @s.puts(message[4])
-    @s.puts("End Of Message")
+    puts choice
+    second_message = [list[0],'SET APPOINTMENT', message[2],message[3],choice,message[4]]
+    puts second_message
+    second_message.each do |line|
+      @s.puts(line)
+    end
   end
 
   ##
