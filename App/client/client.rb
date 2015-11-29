@@ -1,7 +1,7 @@
-require_relative '../utilities/utilities'
-require_relative '../utilities/string'
-require_relative 'appointments'
-require_relative 'doctors'
+require_relative '../../lib/shared/appointments'
+require_relative '../../lib/shared/doctors'
+require_relative '../../lib/utilities/string'
+require_relative '../../lib/utilities/utilities'
 ##
 # acts as an interface between the user and the registrar to obtain and display informaiton to the client.
 class Client

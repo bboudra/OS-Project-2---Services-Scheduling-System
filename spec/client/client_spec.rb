@@ -1,7 +1,7 @@
 require_relative '../../App/client/client'
-require_relative '../../App/utilities/utilities'
-require_relative '../../App/client/doctors'
-require_relative '../../App/client/appointments'
+require_relative '../../lib/utilities/utilities'
+require_relative '../../lib/shared/doctors'
+require_relative '../../lib/shared/appointments'
 require 'date'
 require 'rspec'
 
