@@ -38,6 +38,8 @@ class RegistrarThread
     the_port = 2001
     s = TCPSocket.open('localhost', the_port)
     new_message = request[1...request.length]
+    puts new_message
+
     new_message.each do |line|
       s.puts(line)
     end
