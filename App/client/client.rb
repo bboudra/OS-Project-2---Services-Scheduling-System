@@ -211,4 +211,5 @@ class Client
     time_array[1] = time_array[1].to_i
     return time_array
   end
+
 end
