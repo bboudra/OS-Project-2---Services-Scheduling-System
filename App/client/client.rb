@@ -1,14 +1,21 @@
 require_relative '../../lib/shared/appointments'
-require_relative '../../lib/shared/doctors'
 require_relative '../../lib/utilities/string'
 require_relative '../../lib/utilities/utilities'
+require 'date'
+require 'socket'
 ##
 # acts as an interface between the user and the registrar to obtain and display informaiton to the client.
 class Client
+
+
+  def initialize
+    @s = TCPSocket.open('localhost', 2000)
+  end
+
   ##
   # This method will take in the users date, the time that the appointment begins, and the time that the appointment ends.
   # if the time slot is still available. The program will output a message that the appointment was scheduled. If the
-  # timeslot is taken, an appropriate error message will be output.
+  # time slot is taken, an appropriate error message will be output.
   #
   # * *Args*  :
   #   - +date+ -> the desired date of the appointment.
@@ -17,22 +24,72 @@ class Client
   #   - +end_time+ -> the time that the appointment ends, in most cases, will be calculated by using the start time and the appointment length appointment length.
   # * *Returns* :
   #   - The message stating whether or not the appointment was successful.
-  def make_appointment(date, doctor, start_time, end_time)
+  def make_appointment(date = nil,doctors_office = nil,start_time = nil, appointment_length = nil)
+    list = get_availability_information_from_user
+    message = list.insert(1,'Get Availability Information')
+    message.push("End Of Message")
+    result_message = get_available_times(message)
+    choice = get_user_time_choice(result_message)
+    if choice == -1
+      return make_appointment
+    end
   end
 
   ##
-  # Given a specified doctor, date, and appointment_length, this method will return the list of a particular doctor's
-  # on that particular date for an appointment of that length.
+  # display's appointment list, checks to make sure choice is in list of options, or -1 if they choose to pick a different day
   #
   # * *Args* :
-  #   - +date+ -> the desired date of the appointment.
-  #   - +doctor+ -> the desired doctor
-  #   - +appointment_length+ -> The length ofthe desired appointment
+  #   - +list_of_times+ -> the list of available times for that date, doctor's office, and appointment length
+  #
+  # * *Result* :
+  #   - The time that the user would like to schedule their appointment if the user chooses to pick a time on that day
+  #   - -1 if the user doesn't like any of the times for that day or there are no times for that day
+  #
+  def get_user_time_choice(list_of_times)
+    if list_of_times.length == 0
+      puts 'There are no times available for that day'
+      return -1
+    end
+    option = 0
+    puts '-1: None of the above.'
+    list_of_times.each do |time|
+      "#{option}: #{time}"
+    end
+    choice = gets.chomp
+    if -2 < choice.to_i && choice.to_i < list_of_times.length
+      if choice == -1
+        return -1
+      else
+        return list_of_times[choice]
+      end
+    else
+      puts 'The option that was chosen was not valid, pleas enter a valid option'
+      return get_user_time_choice(list_of_times)
+    end
+  end
+
+  ##
+  # Given a specified doctors office, date, and appointment_length, this method will return the list of a particular
+  # doctors_office on that particular date for an appointment of that length.
+  #
+  # * *Args* :
+  #   - +message+ -> the message containing doctor's office, date, appointment length and operation
   #
   # * *Returns* :
-  #   - The list of available appointment times for that day, doctor, and appointment length
-  def get_available_times(date, doctor, appointment_length)
-
+  #   - The list of available appointment times for that day, doctor's office, and appointment length
+  def get_available_times(message)
+    message.each do |line|
+      puts line
+    end
+    message.each do |line|
+      @s.puts(line)
+    end
+    line = ""
+    response_message = []
+    until line == "End Of Message"
+      response_message.push(line)
+    end
+    return response_message
   end
 
   ##
@@ -45,15 +102,21 @@ class Client
   #   - +appointment_type+ -> the type of the appointment the client needs to have
   # * *Returns* :
   #   - the avalibility information that was either entered by the user or passed in from outside, then verified inside the method
-  def get_availability_information_from_user(date = nil, doctor = nil, appointment_type = nil)
+  def get_availability_information_from_user(date = nil, doctors_office = nil, appointment_type = nil)
     date = get_date() unless date
-    doctor = get_doctor unless doctor
+    doctors_office = get_doctors_office unless doctors_office
     appointment_type = get_appointment_type unless appointment_type
-    get_availability_information_from_user(nil, doctor, appointment_type) unless valid_date?(date)
-    get_availability_information_from_user(date, nil, appointment_type) unless valid_doctor?(doctor)
-    get_availability_information_from_user(date, doctor) unless valid_appointment_type?(appointment_type)
+    unless valid_date?(date)
+      puts "The date you entered is not valid, please enter a valid date"
+      get_availability_information_from_user(nil,doctors_office,appointment_type)
+    end
+    unless valid_appointment_type?(appointment_type)
+      puts "The type of appointment you entered, is not valid, please try again"
+      get_availability_information_from_user(date,doctors_office)
+    end
     appointments = Appointments.new
-    appointment_length = appointments.get_appointment_length(appointments)
+    appointment_length = appointments.get_appointment_length(appointment_type)
+    return [doctors_office,date,appointment_length]
   end
 
   ##
@@ -68,7 +131,7 @@ class Client
     puts "Use the form mm/dd/yyyy"
     return gets.chop()
   end
-
+=begin
   ##
   # Gets the desired doctor from the user and returns it to the caller.
   #
@@ -92,7 +155,23 @@ class Client
 
     return get_doctor
   end
+=end
 
+  ##
+  # Gets the name desired doctors office from the user.
+  #
+  # * *Args* :
+  #
+  # * *Returns* :
+  #   - the name of the doctors office
+  def get_doctors_office
+    puts "Please enter the name of the doctors office"
+    doctors_office = gets.chomp
+    if doctors_office.length != 0
+      return doctors_office
+    end
+    return get_doctors_office
+  end
   ##
   # Gets the appointment type from the user and returns it to the caller.
   #
@@ -112,7 +191,7 @@ class Client
     choice = gets.chomp
     if choice.is_i?
       choice = choice.to_i
-      return doctors_list
+      return appointments_list[choice]
     end
   end
 

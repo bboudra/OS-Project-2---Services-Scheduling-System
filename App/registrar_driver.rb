@@ -1,8 +1,7 @@
-require 'singleton'
 require_relative 'registrar/registrar_thread'
 require 'socket'
+
 class RegistrarDriver
-    include Singleton
 
   def initialize
     @registrar= TCPServer.open(2000)
@@ -18,5 +17,5 @@ class RegistrarDriver
   end
 end
 
-@registrar_driver = RegistrarDriver.instance
+@registrar_driver = RegistrarDriver.new
 @registrar_driver.run

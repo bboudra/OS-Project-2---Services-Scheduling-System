@@ -1,23 +1,18 @@
 require 'socket'
-require 'singleton'
 class RegistrarThread
-
   def initialize(client)
     @client = client
   end
 
-
-  def run()
+  def run
     request = []
     result = ""
     while result != "End Of Message"
       result = @client.gets.chomp
       request.push(result)
     end
-
-    office = Office.new
-    port = office.get_office_port(request[0])
-    s = TCPSocket.open('localhost', port)
+    the_port = 2001
+    s = TCPSocket.open('localhost', the_port)
     new_message = request[1...request.length]
     new_message.each do |line|
       s.puts(line)
@@ -35,4 +30,8 @@ class RegistrarThread
     @client.close
   end
 
+  def get_office_port(office_name)
+    office_list['Office 1'] = 2001
+    office_list[office_name]
+  end
 end
