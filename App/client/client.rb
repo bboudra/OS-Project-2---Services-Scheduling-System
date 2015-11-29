@@ -33,6 +33,12 @@ class Client
     if choice == -1
       return make_appointment
     end
+    @s.puts(list[0])
+    @s.puts('SET APPOINTMENT')
+    @s.puts(message[2])
+    @s.puts(message[3])
+    @s.puts(message[4])
+    @s.puts("End Of Message")
   end
 
   ##
@@ -53,14 +59,15 @@ class Client
     option = 0
     puts '-1: None of the above.'
     list_of_times.each do |time|
-      "#{option}: #{time}"
+      puts "#{option}: #{time}"
+      option+= 1
     end
     choice = gets.chomp
     if -2 < choice.to_i && choice.to_i < list_of_times.length
       if choice == -1
         return -1
       else
-        return list_of_times[choice]
+        return list_of_times[choice.to_i]
       end
     else
       puts 'The option that was chosen was not valid, pleas enter a valid option'
@@ -91,7 +98,8 @@ class Client
       puts "#{line}"
       response_message.push(line)
     end
-    return response_message
+
+    response_message
   end
 
   ##
