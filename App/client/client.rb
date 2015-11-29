@@ -39,6 +39,8 @@ class Client
     second_message.each do |line|
       @s.puts(line)
     end
+    line = @s.gets.chomp
+    puts line
   end
 
   ##

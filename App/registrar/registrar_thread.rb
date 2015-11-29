@@ -45,10 +45,8 @@ class RegistrarThread
     end
     server_response = []
     server_response_line= ""
-    until server_response_line == "End Of Message"
-      server_response_line = s.gets.chomp
-      server_response.push(server_response_line)
-    end
+    server_response_line = s.gets.chomp
+    server_response.push(server_response_line)
     puts server_response
     server_response.each do |line|
       @client.puts(line)

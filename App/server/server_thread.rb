@@ -16,8 +16,8 @@ class ServerThread
       return result
     else
       schedule = Schedule.new
-      result = schedule.set_appointment(list[1],list[2])
-      return result
+      result = schedule.set_appointment(list[1],list[2],list[3])
+      [result]
     end
   end
 end
