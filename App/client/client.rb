@@ -1,3 +1,7 @@
+require_relative '../utilities/utilities'
+require_relative '../utilities/string'
+require_relative 'appointments'
+require_relative 'doctors'
 ##
 # acts as an interface between the user and the registrar to obtain and display informaiton to the client.
 class Client
@@ -32,27 +36,144 @@ class Client
   end
 
   ##
-  # Gets the date, doctor, and availability informaiton from the user unless the information is passed in as a
+  # Gets the date, doctor, and availability information from the user unless the information is passed in as a
   # parameter. Allows the information to be passed in as a parameter for the purposes of automated testing.
   #
   # * *Args* :
   #   - +date+ -> the date that the user wishes to check for availability
   #   - +doctor+ -> the doctor that the user wishes to see on that date.
-  #   - +appointment_length+ -> the length of the appointment the client needs to have, will be determined by appointment type
+  #   - +appointment_type+ -> the type of the appointment the client needs to have
   # * *Returns* :
   #   - the avalibility information that was either entered by the user or passed in from outside, then verified inside the method
-  def get_availability_information_from_user(date = nil, doctor = nil, appointment_length = nil)
-
+  def get_availability_information_from_user(date = nil, doctor = nil, appointment_type = nil)
+    date = get_date() unless date
+    doctor = get_doctor unless doctor
+    appointment_type = get_appointment_type unless appointment_type
+    get_availability_information_from_user(nil, doctor, appointment_type) unless valid_date?(date)
+    get_availability_information_from_user(date, nil, appointment_type) unless valid_doctor?(doctor)
+    get_availability_information_from_user(date, doctor) unless valid_appointment_type?(appointment_type)
+    appointments = Appointments.new
+    appointment_length = appointments.get_appointment_length(appointments)
   end
+
   ##
-  # receives the time as a string and verifies that the format is accurate.
+  # Gets the desired appointment date from the user and returns it to the caller
   #
   # * *Args* :
-  #   - +string_time+ -> the time as a string
+  #
   # * *Returns* :
-  #   - true if string is properly formatted, false if it is not
-  def string_properly_formatted?(string_time)
+  #   - the users desired date (unvalidated)
+  def get_date
+    puts "Please enter the date you wish to schedule an appointment"
+    puts "Use the form mm/dd/yyyy"
+    return gets.chop()
   end
+
+  ##
+  # Gets the desired doctor from the user and returns it to the caller.
+  #
+  # * *Args* :
+  # * *Returns* :
+  #   - the users desired doctor (unvalidated)
+  def get_doctor
+    doctors = Doctors.new
+    puts "Please select the number of the doctor you wish to see"
+    doctors_list = doctors.get_doctors
+    counter = 1
+    doctors_list.each do |doctor|
+      "#{counter}: #{doctor}"
+      counter += 1
+    end
+    choice = gets.chomp
+    if choice.is_i?
+      choice = choice.to_i
+      return doctors_list[counter-1] if (0 < choice && choice < counter)
+    end
+
+    return get_doctor
+  end
+
+  ##
+  # Gets the appointment type from the user and returns it to the caller.
+  #
+  # * *Args* :
+  #
+  # * *Returns* :
+  #   - the appointment type (unvalidated)
+  def get_appointment_type
+    appointments = Appointments.new
+    puts "please select the number of the appointment type you wish to have"
+    appointments_list = appointments.get_appointment_types
+    counter = 1
+    appointments_list.each do |appointment|
+      "#{counter}: #{appointment}"
+      counter += 1
+    end
+    choice = gets.chomp
+    if choice.is_i?
+      choice = choice.to_i
+      return doctors_list
+    end
+  end
+
+  ##
+  # Receives a string that contains clock time and determines whether or not that
+  # that time string is valid.
+  #
+  # * *Args* :
+  #   - +time_string+ -> the float in military time format
+  # * *Returns*
+  #   - true if time is valid
+  #   - false if time is not valid
+  def valid_time?(time_string)
+      if time_string =~ /\A([0]\d|1[012]):(00|15|30|45)\s(AM|PM)\z/
+        return "#{time_string[0...2]}#{time_string[6...8]}"=~ /((0[6789]|1[012])AM|(0[1234567]PM))/
+      end
+  end
+
+
+
+  ##
+  # Receives the date as a string and verifies that the format and rang are valid.
+  #
+  # * *Args* :
+  #   - +string_date+ -> the date as a string
+  # * *Returns* :
+  #   - true if the string is valid
+  #   - false if the string is not valid
+  def valid_date?(string_date)
+    if string_date.length == 10
+      condition_1 = string_date[0...2].is_i?
+      condition_2 = string_date[2] == '/'
+      condition_3 = string_date[3...5].is_i?
+      condition_4 = string_date[5] == '/'
+      condition_5 = string_date[6...10].is_i?
+      if condition_1 && condition_2 && condition_3 && condition_4 && condition_5
+        month = string_date[0...2].to_i
+        day = string_date[3...5].to_i
+        year = string_date[6...10].to_i
+        if Date.valid_date?(year,month,day)
+          if Date.new(year,month,day) > Date.today()
+            return true
+          end
+        end
+      end
+    end
+    return false
+  end
+
+  def valid_doctor?(doctor_name)
+    doctors = Doctors.new
+    return doctors.doctor_exists?(doctor_name)
+  end
+
+  def valid_appointment_type?(appointment_type_string)
+    appointment = Appointments.new
+    return appointment.appointment_type_exists?(appointment_type_string)
+  end
+
+
+
 
   ##
   # Takes a time in string format and turns that time into a military time float
@@ -75,31 +196,6 @@ class Client
   end
 
 
-  ##
-  # Receives a float in military time and returns that time to the caller.
-  #
-  # * *Args* :
-  #   - +float_military_time+ -> the float in military time format
-  # * *Returns*
-  #   - true if time is valid, false if it is not
-  def valid_time?(float_military_time)
-    valid_number = true
-    if 6.00 <=float_military_time && float_military_time <= 20.00
-      if (float_military_time - float_military_time.to_i.to_f) == 0.0
-        return valid_number
-      end
-      if (float_military_time - float_military_time.to_i.to_f) == 0.25
-        return valid_number
-      end
-      if (float_military_time - float_military_time.to_i.to_f) == 0.50
-        return valid_number
-      end
-      if (float_military_time - float_military_time.to_i.to_f) == 0.75
-        return valid_number
-      end
-    end
-    return !(valid_number)
-  end
 
   private # all methods declared after this point are private
   ##
@@ -115,5 +211,4 @@ class Client
     time_array[1] = time_array[1].to_i
     return time_array
   end
-
 end
