@@ -12,7 +12,7 @@ class ServerThread
   def run()
     list = []
     result = ""
-    while result != "End Of Message"
+    while result != "END OF MESSAGE"
       result = @client.gets.chomp
       list.push(result)
     end

@@ -24,17 +24,18 @@ class Client
   #   - +end_time+ -> the time that the appointment ends, in most cases, will be calculated by using the start time and the appointment length appointment length.
   # * *Returns* :
   #   - The message stating whether or not the appointment was successful.
-  def make_appointment(date = nil,doctors_office = nil,start_time = nil, appointment_length = nil)
+  def make_appointment(date = nil, doctors_office = nil, start_time = nil, appointment_length = nil)
     list = get_availability_information_from_user
-    message = list.insert(1,'VIEW TIMES')
-    message.push("End Of Message")
+    print list
+    @s.puts 'VIEW TIMES'
+    message = list.insert(1, 'VIEW TIMES')
     result_message = get_available_times(message)
     choice = get_user_time_choice(result_message)
     if choice == -1
       return make_appointment
     end
-    puts choice
-    second_message = [list[0],'SET APPOINTMENT', message[2],message[3],choice,message[4]]
+    @s.puts('ADD APPOINTMENT')
+    second_message = [list[0], 'ADD APPOINTMENT', message[2], message[3], choice, 'END OF MESSAGE']
     puts second_message
     second_message.each do |line|
       @s.puts(line)
@@ -54,6 +55,7 @@ class Client
   #   - -1 if the user doesn't like any of the times for that day or there are no times for that day
   #
   def get_user_time_choice(list_of_times)
+    list_of_times = list_of_times[0...list_of_times.length-1]
     if list_of_times.length == 0
       puts 'There are no times available for that day'
       return -1
@@ -90,12 +92,10 @@ class Client
     message.each do |line|
       puts line
     end
-    message.each do |line|
-      @s.puts(line)
-    end
+    self.send_multiline_message(@s,message)
     response_message = []
     line = ""
-    until line == "End Of Message"
+    until line == "END OF MESSAGE"
       line = @s.gets.chomp
       puts "#{line}"
       response_message.push(line)
@@ -116,19 +116,19 @@ class Client
   #   - the avalibility information that was either entered by the user or passed in from outside, then verified inside the method
   def get_availability_information_from_user(date = nil, doctors_office = nil, appointment_type = nil)
     date = get_date() unless date
-    doctors_office = get_doctors_office unless doctors_office
+    doctors_office = get_dentists_office unless doctors_office
     appointment_type = get_appointment_type unless appointment_type
     unless valid_date?(date)
       puts "The date you entered is not valid, please enter a valid date"
-      get_availability_information_from_user(nil,doctors_office,appointment_type)
+      get_availability_information_from_user(nil, doctors_office, appointment_type)
     end
     unless valid_appointment_type?(appointment_type)
       puts "The type of appointment you entered, is not valid, please try again"
-      get_availability_information_from_user(date,doctors_office)
+      get_availability_information_from_user(date, doctors_office)
     end
     appointments = Appointments.new
     appointment_length = appointments.get_appointment_length(appointment_type)
-    return [doctors_office,date,appointment_length]
+    return [doctors_office, date, appointment_length]
   end
 
   ##
@@ -143,31 +143,6 @@ class Client
     puts "Use the form mm/dd/yyyy"
     return gets.chop()
   end
-=begin
-  ##
-  # Gets the desired doctor from the user and returns it to the caller.
-  #
-  # * *Args* :
-  # * *Returns* :
-  #   - the users desired doctor (unvalidated)
-  def get_doctor
-    doctors = Doctors.new
-    puts "Please select the number of the doctor you wish to see"
-    doctors_list = doctors.get_doctors
-    counter = 1
-    doctors_list.each do |doctor|
-      "#{counter}: #{doctor}"
-      counter += 1
-    end
-    choice = gets.chomp
-    if choice.is_i?
-      choice = choice.to_i
-      return doctors_list[counter-1] if (0 < choice && choice < counter)
-    end
-
-    return get_doctor
-  end
-=end
 
   ##
   # Gets the name desired doctors office from the user.
@@ -176,14 +151,23 @@ class Client
   #
   # * *Returns* :
   #   - the name of the doctors office
-  def get_doctors_office
-    puts "Please enter the name of the doctors office"
-    doctors_office = gets.chomp
-    if doctors_office.length != 0
-      return doctors_office
+  def get_dentists_office
+    @s.puts('GET DENTIST OFFICE')
+    puts "i reached here"
+    message = receive_multi_line_message(@s)
+    puts "please select the number of the dentist office you wish to use"
+    counter = 1
+    message.each { |line|
+      puts "#{counter}: #{line}"
+      counter += 1
+    }
+    choice = gets.chomp
+    if choice.is_i?
+      choice = choice.to_i
+      return message[choice-1]
     end
-    return get_doctors_office
   end
+
   ##
   # Gets the appointment type from the user and returns it to the caller.
   #
@@ -197,7 +181,7 @@ class Client
     appointments_list = appointments.get_appointment_types
     counter = 1
     appointments_list.each do |appointment|
-      "#{counter}: #{appointment}"
+      puts "#{counter}: #{appointment}"
       counter += 1
     end
     choice = gets.chomp
@@ -217,11 +201,10 @@ class Client
   #   - true if time is valid
   #   - false if time is not valid
   def valid_time?(time_string)
-      if time_string =~ /\A([0]\d|1[012]):(00|15|30|45)\s(AM|PM)\z/
-        return "#{time_string[0...2]}#{time_string[6...8]}"=~ /((0[6789]|1[012])AM|(0[1234567]PM))/
-      end
+    if time_string =~ /\A([0]\d|1[012]):(00|15|30|45)\s(AM|PM)\z/
+      return "#{time_string[0...2]}#{time_string[6...8]}"=~ /((0[6789]|1[012])AM|(0[1234567]PM))/
+    end
   end
-
 
 
   ##
@@ -243,8 +226,8 @@ class Client
         month = string_date[0...2].to_i
         day = string_date[3...5].to_i
         year = string_date[6...10].to_i
-        if Date.valid_date?(year,month,day)
-          if Date.new(year,month,day) > Date.today()
+        if Date.valid_date?(year, month, day)
+          if Date.new(year, month, day) > Date.today()
             return true
           end
         end
@@ -262,8 +245,6 @@ class Client
     appointment = Appointments.new
     return appointment.appointment_type_exists?(appointment_type_string)
   end
-
-
 
 
   ##
@@ -285,7 +266,12 @@ class Client
     float_military_time = "#{int_time_array[0]}.#{int_time_array[1]}".to_f
     return float_military_time.round(2)
   end
-
+  def send_multiline_message(socket,message)
+    message.each { |line|
+      socket.puts(line)
+    }
+    socket.puts("END OF MESSAGE")
+  end
 
 
   private # all methods declared after this point are private
@@ -302,5 +288,18 @@ class Client
     time_array[1] = time_array[1].to_i
     return time_array
   end
+
+  def receive_multi_line_message(socket)
+    message = []
+    line = ""
+    puts "I reached here"
+    until line == 'END OF MESSAGE'
+      line = socket.gets.chomp
+      message.push(line)
+    end
+    message = message[0...message.length - 1]
+    return message
+  end
+
 
 end

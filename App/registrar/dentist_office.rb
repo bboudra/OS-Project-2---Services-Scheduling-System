@@ -8,8 +8,12 @@ class DentistOffice
   @@lock = Mutex.new
 
   def initialize
-    @office_list = {}
-    @office_list['Office 1'] = 2001
+    @@office_list = {}
+    @@office_list['Office 1'] = ['localhost', 2001]
+    @@office_list['Office 2'] = ['localhost', 2002]
+    @@office_list['Office 3'] = ['localhost', 2003]
+    @@office_list['Office 4'] = ['localhost', 2004]
+    @@office_list['Office 5'] = ['localhost', 2005]
   end
 
   ##
@@ -18,6 +22,19 @@ class DentistOffice
   def get_office_port(office_name)
     @@lock.synchronize {
       @@office_list[office_name]
+    }
+  end
+
+  ##
+  # Helper method to be used for testing purposes
+  #
+  # * *Args* :
+  #
+  # * *Returns* :
+  #
+  def clear_offices_list
+    @@lock.synchronize {
+      @@office_list.clear
     }
   end
 
@@ -38,9 +55,9 @@ class DentistOffice
   #
   # * *Returns* :
   #
-  def add_offices(office_name, port)
+  def add_office(office_name, port)
     @@lock.synchronize {
-      if !(@office_list.has_key?(office_name))
+      if !(@@office_list.has_key?(office_name))
         @@office_list[office_name] = port
       end
     }
