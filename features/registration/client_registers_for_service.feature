@@ -1,3 +1,4 @@
+#NOT IMPLEMENTED
 #language: en
 Feature: Client registers for service
   In order to have dental work done.

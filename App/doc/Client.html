@@ -73,17 +73,29 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-break_into_pieces">#break_into_pieces</a>
+    <li ><a href="#method-c-new">::new</a>
     
     <li ><a href="#method-i-convert_time_to_military_float">#convert_time_to_military_float</a>
+    
+    <li ><a href="#method-i-get_appointment_type">#get_appointment_type</a>
     
     <li ><a href="#method-i-get_availability_information_from_user">#get_availability_information_from_user</a>
     
     <li ><a href="#method-i-get_available_times">#get_available_times</a>
     
+    <li ><a href="#method-i-get_date">#get_date</a>
+    
+    <li ><a href="#method-i-get_doctors_office">#get_doctors_office</a>
+    
+    <li ><a href="#method-i-get_user_time_choice">#get_user_time_choice</a>
+    
     <li ><a href="#method-i-make_appointment">#make_appointment</a>
     
-    <li ><a href="#method-i-string_properly_formatted-3F">#string_properly_formatted?</a>
+    <li ><a href="#method-i-valid_appointment_type-3F">#valid_appointment_type?</a>
+    
+    <li ><a href="#method-i-valid_date-3F">#valid_date?</a>
+    
+    <li ><a href="#method-i-valid_doctor-3F">#valid_doctor?</a>
     
     <li ><a href="#method-i-valid_time-3F">#valid_time?</a>
     
@@ -118,6 +130,47 @@ display informaiton to the client.</p>
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+  <span class="ruby-ivar">@s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&#39;localhost&#39;</span>, <span class="ruby-value">2000</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
@@ -155,7 +208,7 @@ float</p>
 
           
           <div class="method-source-code" id="convert_time_to_military_float-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 64</span>
+            <pre><span class="ruby-comment"># File client/client.rb, line 276</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">convert_time_to_military_float</span>(<span class="ruby-identifier">string_time</span>)
   <span class="ruby-identifier">int_time_array</span> = <span class="ruby-identifier">break_into_pieces</span>(<span class="ruby-identifier">string_time</span>)
   <span class="ruby-keyword">if</span> (<span class="ruby-identifier">int_time_array</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value">12.0</span>)
@@ -178,11 +231,11 @@ float</p>
       </div>
 
     
-      <div id="method-i-get_availability_information_from_user" class="method-detail ">
+      <div id="method-i-get_appointment_type" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">get_availability_information_from_user</span><span
-            class="method-args">(date = nil, doctor = nil, appointment_length = nil)</span>
+          <span class="method-name">get_appointment_type</span><span
+            class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -191,7 +244,60 @@ float</p>
 
         <div class="method-description">
           
-          <p>Gets the date, doctor, and availability informaiton from the user unless
+          <p>Gets the appointment type from the user and returns it to the caller.</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>the appointment type (unvalidated)</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_appointment_type-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 194</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_appointment_type</span>
+  <span class="ruby-identifier">appointments</span> = <span class="ruby-constant">Appointments</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;please select the number of the appointment type you wish to have&quot;</span>
+  <span class="ruby-identifier">appointments_list</span> = <span class="ruby-identifier">appointments</span>.<span class="ruby-identifier">get_appointment_types</span>
+  <span class="ruby-identifier">counter</span> = <span class="ruby-value">1</span>
+  <span class="ruby-identifier">appointments_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">appointment</span><span class="ruby-operator">|</span>
+    <span class="ruby-node">&quot;#{counter}: #{appointment}&quot;</span>
+    <span class="ruby-identifier">counter</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">choice</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">choice</span>.<span class="ruby-identifier">is_i?</span>
+    <span class="ruby-identifier">choice</span> = <span class="ruby-identifier">choice</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">appointments_list</span>[<span class="ruby-identifier">choice</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_availability_information_from_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_availability_information_from_user</span><span
+            class="method-args">(date = nil, doctors_office = nil, appointment_type = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the date, doctor, and availability information from the user unless
 the information is passed in as a parameter. Allows the information to be
 passed in as a parameter for the purposes of automated testing.</p>
 <ul><li>
@@ -203,8 +309,8 @@ availability</p>
 <p><code>doctor</code> -&gt; the doctor that the user wishes to see on that
 date.</p>
 </li><li>
-<p><code>appointment_length</code> -&gt; the length of the appointment the
-client needs to have, will be determined by appointment type</p>
+<p><code>appointment_type</code> -&gt; the type of the appointment the client
+needs to have</p>
 </li></ul>
 </li><li>
 <p><strong>Returns</strong> :</p>
@@ -218,9 +324,22 @@ in from outside, then verified inside the method</p>
 
           
           <div class="method-source-code" id="get_availability_information_from_user-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 44</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_availability_information_from_user</span>(<span class="ruby-identifier">date</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">doctor</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">appointment_length</span> = <span class="ruby-keyword">nil</span>)
-
+            <pre><span class="ruby-comment"># File client/client.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_availability_information_from_user</span>(<span class="ruby-identifier">date</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">doctors_office</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">appointment_type</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">date</span> = <span class="ruby-identifier">get_date</span>() <span class="ruby-keyword">unless</span> <span class="ruby-identifier">date</span>
+  <span class="ruby-identifier">doctors_office</span> = <span class="ruby-identifier">get_doctors_office</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">doctors_office</span>
+  <span class="ruby-identifier">appointment_type</span> = <span class="ruby-identifier">get_appointment_type</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">appointment_type</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_date?</span>(<span class="ruby-identifier">date</span>)
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;The date you entered is not valid, please enter a valid date&quot;</span>
+    <span class="ruby-identifier">get_availability_information_from_user</span>(<span class="ruby-keyword">nil</span>,<span class="ruby-identifier">doctors_office</span>,<span class="ruby-identifier">appointment_type</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">valid_appointment_type?</span>(<span class="ruby-identifier">appointment_type</span>)
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;The type of appointment you entered, is not valid, please try again&quot;</span>
+    <span class="ruby-identifier">get_availability_information_from_user</span>(<span class="ruby-identifier">date</span>,<span class="ruby-identifier">doctors_office</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">appointments</span> = <span class="ruby-constant">Appointments</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">appointment_length</span> = <span class="ruby-identifier">appointments</span>.<span class="ruby-identifier">get_appointment_length</span>(<span class="ruby-identifier">appointment_type</span>)
+  <span class="ruby-keyword">return</span> [<span class="ruby-identifier">doctors_office</span>,<span class="ruby-identifier">date</span>,<span class="ruby-identifier">appointment_length</span>]
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -236,7 +355,7 @@ in from outside, then verified inside the method</p>
         
         <div class="method-heading">
           <span class="method-name">get_available_times</span><span
-            class="method-args">(date, doctor, appointment_length)</span>
+            class="method-args">(message)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -245,23 +364,20 @@ in from outside, then verified inside the method</p>
 
         <div class="method-description">
           
-          <p>Given a specified doctor, date, and appointment_length, this method will
-return the list of a particular doctor&#39;s on that particular date for an
-appointment of that length.</p>
+          <p>Given a specified doctors office, date, and appointment_length, this method
+will return the list of a particular doctors_office on that particular date
+for an appointment of that length.</p>
 <ul><li>
 <p><strong>Args</strong> :</p>
 <ul><li>
-<p><code>date</code> -&gt; the desired date of the appointment.</p>
-</li><li>
-<p><code>doctor</code> -&gt; the desired doctor</p>
-</li><li>
-<p><code>appointment_length</code> -&gt; The length ofthe desired appointment</p>
+<p><code>message</code> -&gt; the message containing doctor&#39;s office,
+date, appointment length and operation</p>
 </li></ul>
 </li><li>
 <p><strong>Returns</strong> :</p>
 <ul><li>
-<p>The list of available appointment times for that day, doctor, and
-appointment length</p>
+<p>The list of available appointment times for that day, doctor&#39;s office,
+and appointment length</p>
 </li></ul>
 </li></ul>
           
@@ -269,9 +385,183 @@ appointment length</p>
 
           
           <div class="method-source-code" id="get_available_times-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 30</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_available_times</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">doctor</span>, <span class="ruby-identifier">appointment_length</span>)
+            <pre><span class="ruby-comment"># File client/client.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_available_times</span>(<span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@s</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">response_message</span> = []
+  <span class="ruby-identifier">line</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">until</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
+    <span class="ruby-identifier">line</span> = <span class="ruby-ivar">@s</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{line}&quot;</span>
+    <span class="ruby-identifier">response_message</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
 
+  <span class="ruby-identifier">response_message</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_date" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_date</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the desired appointment date from the user and returns it to the
+caller</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>the users desired date (unvalidated)</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_date-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_date</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Please enter the date you wish to schedule an appointment&quot;</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Use the form mm/dd/yyyy&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chop</span>()
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_doctors_office" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_doctors_office</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the name desired doctors office from the user.</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>the name of the doctors office</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_doctors_office-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 179</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_doctors_office</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Please enter the name of the doctors office&quot;</span>
+  <span class="ruby-identifier">doctors_office</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">doctors_office</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">doctors_office</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">get_doctors_office</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_user_time_choice" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_user_time_choice</span><span
+            class="method-args">(list_of_times)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>display&#39;s appointment list, checks to make sure choice is in list of
+options, or -1 if they choose to pick a different day</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+<ul><li>
+<p><code>list_of_times</code> -&gt; the list of available times for that date,
+doctor&#39;s office, and appointment length</p>
+</li></ul>
+</li><li>
+<p><strong>Result</strong> :</p>
+<ul><li>
+<p>The time that the user would like to schedule their appointment if the user
+chooses to pick a time on that day</p>
+</li><li>
+<p>-1 if the user doesn&#39;t like any of the times for that day or there are
+no times for that day</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_user_time_choice-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_user_time_choice</span>(<span class="ruby-identifier">list_of_times</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">list_of_times</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;There are no times available for that day&#39;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-value">-1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">option</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;-1: None of the above.&#39;</span>
+  <span class="ruby-identifier">list_of_times</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{option}: #{time}&quot;</span>
+    <span class="ruby-identifier">option</span><span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">choice</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-value">-2</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">choice</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">choice</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">list_of_times</span>.<span class="ruby-identifier">length</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">choice</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-value">-1</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">list_of_times</span>[<span class="ruby-identifier">choice</span>.<span class="ruby-identifier">to_i</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&#39;The option that was chosen was not valid, pleas enter a valid option&#39;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">get_user_time_choice</span>(<span class="ruby-identifier">list_of_times</span>)
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -287,7 +577,7 @@ appointment length</p>
         
         <div class="method-heading">
           <span class="method-name">make_appointment</span><span
-            class="method-args">(date, doctor, start_time, end_time)</span>
+            class="method-args">(date = nil,doctors_office = nil,start_time = nil, appointment_length = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -299,7 +589,7 @@ appointment length</p>
           <p>This method will take in the users date, the time that the appointment
 begins, and the time that the appointment ends. if the time slot is still
 available. The program will output a message that the appointment was
-scheduled. If the timeslot is taken, an appropriate error message will be
+scheduled. If the time slot is taken, an appropriate error message will be
 output.</p>
 <ul><li>
 <p><strong>Args</strong>  :</p>
@@ -325,8 +615,24 @@ length appointment length.</p>
 
           
           <div class="method-source-code" id="make_appointment-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 16</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_appointment</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">doctor</span>, <span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">end_time</span>)
+            <pre><span class="ruby-comment"># File client/client.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_appointment</span>(<span class="ruby-identifier">date</span> = <span class="ruby-keyword">nil</span>,<span class="ruby-identifier">doctors_office</span> = <span class="ruby-keyword">nil</span>,<span class="ruby-identifier">start_time</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">appointment_length</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">list</span> = <span class="ruby-identifier">get_availability_information_from_user</span>
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">list</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">1</span>,<span class="ruby-string">&#39;VIEW TIMES&#39;</span>)
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">push</span>(<span class="ruby-string">&quot;End Of Message&quot;</span>)
+  <span class="ruby-identifier">result_message</span> = <span class="ruby-identifier">get_available_times</span>(<span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">choice</span> = <span class="ruby-identifier">get_user_time_choice</span>(<span class="ruby-identifier">result_message</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">choice</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">make_appointment</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">choice</span>
+  <span class="ruby-identifier">second_message</span> = [<span class="ruby-identifier">list</span>[<span class="ruby-value">0</span>],<span class="ruby-string">&#39;SET APPOINTMENT&#39;</span>, <span class="ruby-identifier">message</span>[<span class="ruby-value">2</span>],<span class="ruby-identifier">message</span>[<span class="ruby-value">3</span>],<span class="ruby-identifier">choice</span>,<span class="ruby-identifier">message</span>[<span class="ruby-value">4</span>]]
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">second_message</span>
+  <span class="ruby-identifier">second_message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@s</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">line</span> = <span class="ruby-ivar">@s</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">line</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -338,11 +644,11 @@ length appointment length.</p>
       </div>
 
     
-      <div id="method-i-string_properly_formatted-3F" class="method-detail ">
+      <div id="method-i-valid_appointment_type-3F" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">string_properly_formatted?</span><span
-            class="method-args">(string_time)</span>
+          <span class="method-name">valid_appointment_type?</span><span
+            class="method-args">(appointment_type_string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -351,25 +657,114 @@ length appointment length.</p>
 
         <div class="method-description">
           
-          <p>receives the time as a string and verifies that the format is accurate.</p>
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid_appointment_type-3F-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 261</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_appointment_type?</span>(<span class="ruby-identifier">appointment_type_string</span>)
+  <span class="ruby-identifier">appointment</span> = <span class="ruby-constant">Appointments</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">appointment</span>.<span class="ruby-identifier">appointment_type_exists?</span>(<span class="ruby-identifier">appointment_type_string</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid_date-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_date?</span><span
+            class="method-args">(string_date)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Receives the date as a string and verifies that the format and rang are
+valid.</p>
 <ul><li>
 <p><strong>Args</strong> :</p>
 <ul><li>
-<p><code>string_time</code> -&gt; the time as a string</p>
+<p><code>string_date</code> -&gt; the date as a string</p>
 </li></ul>
 </li><li>
 <p><strong>Returns</strong> :</p>
 <ul><li>
-<p>true if string is properly formatted, false if it is not</p>
+<p>true if the string is valid</p>
+</li><li>
+<p>false if the string is not valid</p>
 </li></ul>
 </li></ul>
           
           
 
           
-          <div class="method-source-code" id="string_properly_formatted-3F-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 54</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">string_properly_formatted?</span>(<span class="ruby-identifier">string_time</span>)
+          <div class="method-source-code" id="valid_date-3F-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 235</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_date?</span>(<span class="ruby-identifier">string_date</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">string_date</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">10</span>
+    <span class="ruby-identifier">condition_1</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">2</span>].<span class="ruby-identifier">is_i?</span>
+    <span class="ruby-identifier">condition_2</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">2</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;/&#39;</span>
+    <span class="ruby-identifier">condition_3</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">3</span><span class="ruby-operator">...</span><span class="ruby-value">5</span>].<span class="ruby-identifier">is_i?</span>
+    <span class="ruby-identifier">condition_4</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">5</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;/&#39;</span>
+    <span class="ruby-identifier">condition_5</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">6</span><span class="ruby-operator">...</span><span class="ruby-value">10</span>].<span class="ruby-identifier">is_i?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">condition_1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">condition_2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">condition_3</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">condition_4</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">condition_5</span>
+      <span class="ruby-identifier">month</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">2</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">day</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">3</span><span class="ruby-operator">...</span><span class="ruby-value">5</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">year</span> = <span class="ruby-identifier">string_date</span>[<span class="ruby-value">6</span><span class="ruby-operator">...</span><span class="ruby-value">10</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">valid_date?</span>(<span class="ruby-identifier">year</span>,<span class="ruby-identifier">month</span>,<span class="ruby-identifier">day</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">year</span>,<span class="ruby-identifier">month</span>,<span class="ruby-identifier">day</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>()
+          <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-valid_doctor-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_doctor?</span><span
+            class="method-args">(doctor_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="valid_doctor-3F-source">
+            <pre><span class="ruby-comment"># File client/client.rb, line 256</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_doctor?</span>(<span class="ruby-identifier">doctor_name</span>)
+  <span class="ruby-identifier">doctors</span> = <span class="ruby-constant">Doctors</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">doctors</span>.<span class="ruby-identifier">doctor_exists?</span>(<span class="ruby-identifier">doctor_name</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -385,7 +780,7 @@ length appointment length.</p>
         
         <div class="method-heading">
           <span class="method-name">valid_time?</span><span
-            class="method-args">(float_military_time)</span>
+            class="method-args">(time_string)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -394,16 +789,19 @@ length appointment length.</p>
 
         <div class="method-description">
           
-          <p>Receives a float in military time and returns that time to the caller.</p>
+          <p>Receives a string that contains clock time and determines whether or not
+that that time string is valid.</p>
 <ul><li>
 <p><strong>Args</strong> :</p>
 <ul><li>
-<p><code>float_military_time</code> -&gt; the float in military time format</p>
+<p><code>time_string</code> -&gt; the float in military time format</p>
 </li></ul>
 </li><li>
 <p><strong>Returns</strong></p>
 <ul><li>
-<p>true if time is valid, false if it is not</p>
+<p>true if time is valid</p>
+</li><li>
+<p>false if time is not valid</p>
 </li></ul>
 </li></ul>
           
@@ -411,81 +809,11 @@ length appointment length.</p>
 
           
           <div class="method-source-code" id="valid_time-3F-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 85</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_time?</span>(<span class="ruby-identifier">float_military_time</span>)
-  <span class="ruby-identifier">valid_number</span> = <span class="ruby-keyword">true</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-value">6.00</span> <span class="ruby-operator">&lt;=</span><span class="ruby-identifier">float_military_time</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">float_military_time</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">20.00</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">float_military_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">float_military_time</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_f</span>) <span class="ruby-operator">==</span> <span class="ruby-value">0.0</span>
-      <span class="ruby-keyword">return</span> <span class="ruby-identifier">valid_number</span>
+            <pre><span class="ruby-comment"># File client/client.rb, line 219</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_time?</span>(<span class="ruby-identifier">time_string</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A([0]\d|1[012]):(00|15|30|45)\s(AM|PM)\z/</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{time_string[0...2]}#{time_string[6...8]}&quot;</span><span class="ruby-operator">=~</span> <span class="ruby-regexp">/((0[6789]|1[012])AM|(0[1234567]PM))/</span>
     <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">float_military_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">float_military_time</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_f</span>) <span class="ruby-operator">==</span> <span class="ruby-value">0.25</span>
-      <span class="ruby-keyword">return</span> <span class="ruby-identifier">valid_number</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">float_military_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">float_military_time</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_f</span>) <span class="ruby-operator">==</span> <span class="ruby-value">0.50</span>
-      <span class="ruby-keyword">return</span> <span class="ruby-identifier">valid_number</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">float_military_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">float_military_time</span>.<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">to_f</span>) <span class="ruby-operator">==</span> <span class="ruby-value">0.75</span>
-      <span class="ruby-keyword">return</span> <span class="ruby-identifier">valid_number</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-operator">!</span>(<span class="ruby-identifier">valid_number</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-    </section>
-  
-     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Private Instance Methods</h3>
-       </header>
-
-    
-      <div id="method-i-break_into_pieces" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">break_into_pieces</span><span
-            class="method-args">(string_time)</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>receives a string time in format hh:mm:(AM|PM) and returns an array
-containing the hour in location 0, the minute in location 1, and th second
-in location 2</p>
-<ul><li>
-<p><strong>Args</strong> :</p>
-<ul><li>
-<p><code>string_time</code> -&gt; The time in string format</p>
-</li></ul>
-</li><li>
-<p><strong>Returns</strong> :</p>
-<ul><li>
-<p>an array with the hours, minutes, and AM/PM in their respective locations</p>
-</li></ul>
-</li></ul>
-          
-          
-
-          
-          <div class="method-source-code" id="break_into_pieces-source">
-            <pre><span class="ruby-comment"># File client/client.rb, line 112</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">break_into_pieces</span>(<span class="ruby-identifier">string_time</span>)
-  <span class="ruby-identifier">time_array</span> = <span class="ruby-identifier">string_time</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;:&#39;</span>)
-  <span class="ruby-identifier">time_array</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">time_array</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
-  <span class="ruby-identifier">time_array</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">time_array</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-identifier">time_array</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

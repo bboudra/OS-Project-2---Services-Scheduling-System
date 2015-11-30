@@ -1,4 +1,6 @@
 require_relative '../App/client/client'
+##
+# starts client operations
 class ClientDriver
   def start_run
     client = Client.new

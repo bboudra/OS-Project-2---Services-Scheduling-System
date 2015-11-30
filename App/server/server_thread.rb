@@ -1,8 +1,14 @@
 require_relative '../server/schedule'
 class ServerThread
+
+  ##
+  # initializes the server
   def initialize(client)
    @client = client
   end
+
+  ##
+  # runs the server operations at a thread level
   def run()
     list = []
     result = ""

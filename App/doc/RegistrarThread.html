@@ -67,7 +67,21 @@
 
     
     
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
     
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-get_office_port">#get_office_port</a>
+    
+    <li ><a href="#method-i-run">#run</a>
+    
+  </ul>
+</div>
+
   </div>
 </nav>
 
@@ -78,6 +92,14 @@
 
   <section class="description">
     
+<p>A class designed to handle the registrar&#39;s operations at a thread level</p>
+<ul><li>
+<p><strong>Author</strong> :</p>
+<ul><li>
+<p>Benjamin Boudra</p>
+</li></ul>
+</li></ul>
+
   </section>
 
   
@@ -93,6 +115,176 @@
     
 
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(client)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">client</span>)
+  <span class="ruby-ivar">@client</span> = <span class="ruby-identifier">client</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-get_office_port" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_office_port</span><span
+            class="method-args">(office_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Helper method to retrieve a port given a specific office - written because
+dentist office is not functioning correctly</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+<ul><li>
+<p><code>office_name</code> -&gt; the name of the office being searched for</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="get_office_port-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_office_port</span>(<span class="ruby-identifier">office_name</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">office_name</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;Office 1&#39;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-value">2001</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles the registrar&#39;s operations at a thread level</p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
+  <span class="ruby-identifier">request</span> = []
+  <span class="ruby-identifier">result</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">result</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">the_port</span> = <span class="ruby-value">2001</span>
+  <span class="ruby-identifier">s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&#39;localhost&#39;</span>, <span class="ruby-identifier">the_port</span>)
+  <span class="ruby-identifier">new_message</span> = <span class="ruby-identifier">request</span>[<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">request</span>.<span class="ruby-identifier">length</span>]
+  <span class="ruby-identifier">new_message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">s</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">server_response</span> = []
+  <span class="ruby-identifier">server_response_line</span>= <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">until</span> <span class="ruby-identifier">server_response_line</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
+    <span class="ruby-identifier">server_response_line</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">server_response_line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">server_response</span>
+  <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">request</span> = []
+  <span class="ruby-identifier">result</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
+    <span class="ruby-identifier">result</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">result</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">request</span>
+  <span class="ruby-identifier">the_port</span> =
+  <span class="ruby-identifier">s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&#39;localhost&#39;</span>, <span class="ruby-identifier">the_port</span>)
+  <span class="ruby-identifier">new_message</span> = <span class="ruby-identifier">request</span>[<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">request</span>.<span class="ruby-identifier">length</span>]
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">new_message</span>
+
+  <span class="ruby-identifier">new_message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">s</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">server_response</span> = []
+  <span class="ruby-identifier">server_response_line</span>= <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">server_response_line</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">server_response_line</span>)
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">server_response</span>
+  <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">close</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
   </section>
 </main>
 

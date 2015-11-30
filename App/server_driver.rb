@@ -1,10 +1,15 @@
 require 'socket'
 require_relative '../App/server/server_thread'
+##
+# Starts the server operations
+#
 class ServerDriver
   def initialize(port)
     @server = TCPServer.open(port)
   end
 
+  ##
+  # Handles server operations at a multithreaeded level
   def run
     loop do # Servers run forever
       Thread.start(@server.accept) do |client|
