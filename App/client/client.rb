@@ -36,7 +36,6 @@ class Client
     end
     @s.puts('ADD APPOINTMENT')
     second_message = [list[0], 'ADD APPOINTMENT', message[2], message[3], choice, 'END OF MESSAGE']
-    puts second_message
     second_message.each do |line|
       @s.puts(line)
     end
@@ -61,6 +60,7 @@ class Client
       return -1
     end
     option = 0
+    puts 'Please select the number of the time of day you wish to register'
     puts '-1: None of the above.'
     list_of_times.each do |time|
       puts "#{option}: #{time}"
@@ -153,7 +153,6 @@ class Client
   #   - the name of the doctors office
   def get_dentists_office
     @s.puts('GET DENTIST OFFICE')
-    puts "i reached here"
     message = receive_multi_line_message(@s)
     puts "please select the number of the dentist office you wish to use"
     counter = 1

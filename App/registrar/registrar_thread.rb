@@ -46,16 +46,13 @@ class RegistrarThread
       message = message[1...message.length]
       self.send_multi_line_message(s, message)
       response = receive_multi_line_message(s)
-      response.each do |line|
-        puts(line)
-      end
       self.send_multi_line_message(@client, response)
     end
 
     def add_appointment()
       message = self.receive_multi_line_message(@client)
-      the_port = @office.get_office_port(message[0])
-      s = TCPSocket.open('localhost', the_port)
+      destination = @office.get_office_port(message[0])
+      s = TCPSocket.open(destination[0], destination[1])
       message = message[1...message.length]
       self.send_multi_line_message(s, message)
       response = receive_single_line_message(s)
