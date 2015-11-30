@@ -112,9 +112,4 @@ class Day
     return presentable_time
   end
 end
-=begin
-@day = Day.new"12,12,2015"
-puts 42 == @day.convert_to_time_slot_from_string_time("10:30")
-puts 74 == @day.convert_to_time_slot_from_string_time("18:30")
-puts 79 == @day.convert_to_time_slot_from_string_time("19:45")
-=end
+

@@ -37,7 +37,7 @@
   <li class="class">
     <a href="Day.html">Day</a>
   </li>
-  <li class="module">
+  <li class="class">
     <a href="DentistOffice.html">DentistOffice</a>
   </li>
   <li class="class">
@@ -61,19 +61,14 @@
 <ul>
 
   <li class="method">
-    <a href="RegistrarDriver.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">RegistrarDriver</span>
-
-  <li class="method">
-    <a href="ServerDriver.html#method-c-new">::new</a>
-    &mdash;
-    <span class="container">ServerDriver</span>
-
-  <li class="method">
     <a href="Client.html#method-c-new">::new</a>
     &mdash;
     <span class="container">Client</span>
+
+  <li class="method">
+    <a href="ServerThread.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ServerThread</span>
 
   <li class="method">
     <a href="Day.html#method-c-new">::new</a>
@@ -86,9 +81,19 @@
     <span class="container">RegistrarThread</span>
 
   <li class="method">
-    <a href="ServerThread.html#method-c-new">::new</a>
+    <a href="DentistOffice.html#method-c-new">::new</a>
     &mdash;
-    <span class="container">ServerThread</span>
+    <span class="container">DentistOffice</span>
+
+  <li class="method">
+    <a href="RegistrarDriver.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">RegistrarDriver</span>
+
+  <li class="method">
+    <a href="ServerDriver.html#method-c-new">::new</a>
+    &mdash;
+    <span class="container">ServerDriver</span>
 
   <li class="method">
     <a href="Schedule.html#method-c-new">::new</a>
@@ -96,9 +101,29 @@
     <span class="container">Schedule</span>
 
   <li class="method">
+    <a href="RegistrarThread.html#method-i-add_appointment">#add_appointment</a>
+    &mdash;
+    <span class="container">RegistrarThread</span>
+
+  <li class="method">
     <a href="Day.html#method-i-add_appointment">#add_appointment</a>
     &mdash;
     <span class="container">Day</span>
+
+  <li class="method">
+    <a href="DentistOffice.html#method-i-add_office">#add_office</a>
+    &mdash;
+    <span class="container">DentistOffice</span>
+
+  <li class="method">
+    <a href="Client.html#method-i-break_into_pieces">#break_into_pieces</a>
+    &mdash;
+    <span class="container">Client</span>
+
+  <li class="method">
+    <a href="DentistOffice.html#method-i-clear_offices_list">#clear_offices_list</a>
+    &mdash;
+    <span class="container">DentistOffice</span>
 
   <li class="method">
     <a href="Client.html#method-i-convert_time_to_military_float">#convert_time_to_military_float</a>
@@ -136,7 +161,12 @@
     <span class="container">Client</span>
 
   <li class="method">
-    <a href="Client.html#method-i-get_doctors_office">#get_doctors_office</a>
+    <a href="DentistOffice.html#method-i-get_dentist_offices">#get_dentist_offices</a>
+    &mdash;
+    <span class="container">DentistOffice</span>
+
+  <li class="method">
+    <a href="Client.html#method-i-get_dentists_office">#get_dentists_office</a>
     &mdash;
     <span class="container">Client</span>
 
@@ -151,12 +181,7 @@
     <span class="container">Day</span>
 
   <li class="method">
-    <a href="RegistrarThread.html#method-i-get_office_port">#get_office_port</a>
-    &mdash;
-    <span class="container">RegistrarThread</span>
-
-  <li class="method">
-    <a href="DentistOffice.html#method-i-get_office_port">#get_office_port</a>
+    <a href="DentistOffice.html#method-i-get_office_destination">#get_office_destination</a>
     &mdash;
     <span class="container">DentistOffice</span>
 
@@ -176,12 +201,17 @@
     <span class="container">Client</span>
 
   <li class="method">
-    <a href="RegistrarDriver.html#method-i-run">#run</a>
+    <a href="RegistrarThread.html#method-i-receive_multi_line_message">#receive_multi_line_message</a>
     &mdash;
-    <span class="container">RegistrarDriver</span>
+    <span class="container">RegistrarThread</span>
 
   <li class="method">
-    <a href="RegistrarThread.html#method-i-run">#run</a>
+    <a href="Client.html#method-i-receive_multi_line_message">#receive_multi_line_message</a>
+    &mdash;
+    <span class="container">Client</span>
+
+  <li class="method">
+    <a href="RegistrarThread.html#method-i-receive_single_line_message">#receive_single_line_message</a>
     &mdash;
     <span class="container">RegistrarThread</span>
 
@@ -191,9 +221,34 @@
     <span class="container">ServerThread</span>
 
   <li class="method">
+    <a href="RegistrarDriver.html#method-i-run">#run</a>
+    &mdash;
+    <span class="container">RegistrarDriver</span>
+
+  <li class="method">
     <a href="ServerDriver.html#method-i-run">#run</a>
     &mdash;
     <span class="container">ServerDriver</span>
+
+  <li class="method">
+    <a href="RegistrarThread.html#method-i-run">#run</a>
+    &mdash;
+    <span class="container">RegistrarThread</span>
+
+  <li class="method">
+    <a href="RegistrarThread.html#method-i-send_multi_line_message">#send_multi_line_message</a>
+    &mdash;
+    <span class="container">RegistrarThread</span>
+
+  <li class="method">
+    <a href="Client.html#method-i-send_multiline_message">#send_multiline_message</a>
+    &mdash;
+    <span class="container">Client</span>
+
+  <li class="method">
+    <a href="RegistrarThread.html#method-i-send_single_line_message">#send_single_line_message</a>
+    &mdash;
+    <span class="container">RegistrarThread</span>
 
   <li class="method">
     <a href="Schedule.html#method-i-set_appointment">#set_appointment</a>
@@ -216,14 +271,14 @@
     <span class="container">Client</span>
 
   <li class="method">
-    <a href="Client.html#method-i-valid_doctor-3F">#valid_doctor?</a>
+    <a href="Client.html#method-i-valid_time-3F">#valid_time?</a>
     &mdash;
     <span class="container">Client</span>
 
   <li class="method">
-    <a href="Client.html#method-i-valid_time-3F">#valid_time?</a>
+    <a href="RegistrarThread.html#method-i-view_times">#view_times</a>
     &mdash;
-    <span class="container">Client</span>
+    <span class="container">RegistrarThread</span>
 </ul>
 </main>
 

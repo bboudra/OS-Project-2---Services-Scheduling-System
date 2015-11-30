@@ -1,11 +1,10 @@
-Sun, 29 Nov 2015 11:55:03 -0700
-./client/client.rb	Sat, 28 Nov 2015 22:36:31 -0700
-./client_driver.rb	Sun, 29 Nov 2015 00:17:01 -0700
-./registrar/dentist_office.rb	Sat, 28 Nov 2015 23:59:05 -0700
-./registrar/registrar_thread.rb	Sun, 29 Nov 2015 00:04:16 -0700
-./registrar_driver.rb	Sun, 29 Nov 2015 00:17:45 -0700
-./server/day.rb	Sun, 29 Nov 2015 00:15:46 -0700
-./server/doctors.rb	Sat, 28 Nov 2015 14:46:56 -0700
-./server/schedule.rb	Sat, 28 Nov 2015 23:57:15 -0700
-./server/server_thread.rb	Sun, 29 Nov 2015 00:16:24 -0700
-./server_driver.rb	Sun, 29 Nov 2015 00:19:20 -0700
+Mon, 30 Nov 2015 11:25:08 -0700
+./client/client.rb	Sun, 29 Nov 2015 23:28:12 -0700
+./client_driver.rb	Sun, 29 Nov 2015 23:09:24 -0700
+./registrar/dentist_office.rb	Sun, 29 Nov 2015 23:29:16 -0700
+./registrar/registrar_thread.rb	Sun, 29 Nov 2015 23:46:00 -0700
+./registrar_driver.rb	Sun, 29 Nov 2015 23:10:52 -0700
+./server/day.rb	Sun, 29 Nov 2015 23:37:24 -0700
+./server/schedule.rb	Sun, 29 Nov 2015 17:38:45 -0700
+./server/server_thread.rb	Sun, 29 Nov 2015 19:24:33 -0700
+./server_driver.rb	Sun, 29 Nov 2015 23:42:30 -0700

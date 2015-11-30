@@ -3,13 +3,29 @@ require_relative '../App/server/server_thread'
 ##
 # Starts the server operations
 #
+# * *Author* :
+# - Benjamin Boudra
 class ServerDriver
+
+  ##
+  # initializes the server driver
+  #
+  # * *Args* :
+  #   - the port the server is going to listen one
+  #
+  # * *Returns* :
+  #
   def initialize(port)
     @server = TCPServer.open(port)
   end
 
   ##
-  # Handles server operations at a multithreaeded level
+  # Creates the server threads and manages their operations.
+  #
+  # * *Args* :
+  #   -
+  # * *Returns* :
+  #
   def run
     loop do # Servers run forever
       Thread.start(@server.accept) do |client|

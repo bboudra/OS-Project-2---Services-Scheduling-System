@@ -90,7 +90,7 @@
 
   <section class="description">
     
-<p>starts registrar operations</p>
+<p>starts and manages the registrar threads</p>
 
   </section>
 
@@ -126,13 +126,18 @@
 
         <div class="method-description">
           
-          
+          <p>Initializes the registrar.</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File registrar_driver.rb, line 8</span>
+            <pre><span class="ruby-comment"># File registrar_driver.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
   <span class="ruby-ivar">@registrar</span>= <span class="ruby-constant">TCPServer</span>.<span class="ruby-identifier">open</span>(<span class="ruby-value">2000</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -167,13 +172,13 @@
 
         <div class="method-description">
           
-          <p>handles registrar operations at a multithreaded level</p>
+          <p>Handles registrar operations at a multi-threaded level</p>
           
           
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File registrar_driver.rb, line 14</span>
+            <pre><span class="ruby-comment"># File registrar_driver.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
   <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span> <span class="ruby-comment"># Servers run forever</span>
     <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">start</span>(<span class="ruby-ivar">@registrar</span>.<span class="ruby-identifier">accept</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">client</span><span class="ruby-operator">|</span>

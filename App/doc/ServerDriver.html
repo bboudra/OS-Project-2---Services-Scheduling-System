@@ -90,7 +90,12 @@
 
   <section class="description">
     
-<p>starts the server operations</p>
+<p>Starts the server operations</p>
+<ul><li>
+<p><strong>Author</strong> :</p>
+</li><li>
+<p>Benjamin Boudra</p>
+</li></ul>
 
   </section>
 
@@ -126,13 +131,21 @@
 
         <div class="method-description">
           
-          
+          <p>initializes the server driver</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+<ul><li>
+<p>the port the server is going to listen one</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File server_driver.rb, line 7</span>
+            <pre><span class="ruby-comment"># File server_driver.rb, line 18</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">port</span>)
   <span class="ruby-ivar">@server</span> = <span class="ruby-constant">TCPServer</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">port</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -167,13 +180,18 @@
 
         <div class="method-description">
           
-          <p>handles server operations at a multithreaeded level</p>
+          <p>Creates the server threads and manages their operations.</p>
+<ul><li>
+<p><strong>Args</strong> : -</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
           
           
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File server_driver.rb, line 13</span>
+            <pre><span class="ruby-comment"># File server_driver.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
   <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span> <span class="ruby-comment"># Servers run forever</span>
     <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">start</span>(<span class="ruby-ivar">@server</span>.<span class="ruby-identifier">accept</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">client</span><span class="ruby-operator">|</span>

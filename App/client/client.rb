@@ -8,22 +8,24 @@ require 'socket'
 class Client
 
 
+  ##
+  # Initializes the client and connects that client to the registrar.
   def initialize
     @s = TCPSocket.open('localhost', 2000)
   end
 
   ##
-  # This method will take in the users date, the time that the appointment begins, and the time that the appointment ends.
-  # if the time slot is still available. The program will output a message that the appointment was scheduled. If the
+  # This method will take in the users date, the time that the appointment begins, and the length of the appointment.
+  # If the time slot is still available. The program will output a message that the appointment was scheduled. If the
   # time slot is taken, an appropriate error message will be output.
   #
   # * *Args*  :
-  #   - +date+ -> the desired date of the appointment.
-  #   - +doctor+ -> The doctor you wish to use.
-  #   - +start_time+ -> the beginning the desired appointment time.
+  #   - +date+ -> the desired date of the appointment
+  #   - +doctor+ -> the doctor you wish to use
+  #   - +start_time+ -> the beginning the desired appointment time
   #   - +end_time+ -> the time that the appointment ends, in most cases, will be calculated by using the start time and the appointment length appointment length.
   # * *Returns* :
-  #   - The message stating whether or not the appointment was successful.
+  #   - the message stating whether or not the appointment was successful
   def make_appointment(date = nil, doctors_office = nil, start_time = nil, appointment_length = nil)
     list = get_availability_information_from_user
     print list
@@ -44,13 +46,13 @@ class Client
   end
 
   ##
-  # display's appointment list, checks to make sure choice is in list of options, or -1 if they choose to pick a different day
+  # Display's appointment list, checks to make sure choice is in list of options, or -1 if they choose to pick a different day
   #
   # * *Args* :
   #   - +list_of_times+ -> the list of available times for that date, doctor's office, and appointment length
   #
   # * *Result* :
-  #   - The time that the user would like to schedule their appointment if the user chooses to pick a time on that day
+  #   - the time that the user would like to schedule their appointment
   #   - -1 if the user doesn't like any of the times for that day or there are no times for that day
   #
   def get_user_time_choice(list_of_times)
@@ -80,8 +82,8 @@ class Client
   end
 
   ##
-  # Given a specified doctors office, date, and appointment_length, this method will return the list of a particular
-  # doctors_office on that particular date for an appointment of that length.
+  # Given a specified dentist's office, date, and appointment_length, this method will return the list of a particular
+  # dentist's office on that particular date for an appointment of that length.
   #
   # * *Args* :
   #   - +message+ -> the message containing doctor's office, date, appointment length and operation
@@ -105,15 +107,15 @@ class Client
   end
 
   ##
-  # Gets the date, doctor, and availability information from the user unless the information is passed in as a
+  # Gets the date, dentists office, and availability information from the user unless the information is passed in as a
   # parameter. Allows the information to be passed in as a parameter for the purposes of automated testing.
   #
   # * *Args* :
   #   - +date+ -> the date that the user wishes to check for availability
-  #   - +doctor+ -> the doctor that the user wishes to see on that date.
-  #   - +appointment_type+ -> the type of the appointment the client needs to have
+  #   - +dentist_office+ -> the dentist office that the user wishes to go to.
+  #   - +appointment_type+ -> the type of the appointment the user needs to have
   # * *Returns* :
-  #   - the avalibility information that was either entered by the user or passed in from outside, then verified inside the method
+  #   - the availability information that was either entered by the user or passed in from outside, then verified inside the method
   def get_availability_information_from_user(date = nil, doctors_office = nil, appointment_type = nil)
     date = get_date() unless date
     doctors_office = get_dentists_office unless doctors_office
@@ -132,7 +134,7 @@ class Client
   end
 
   ##
-  # Gets the desired appointment date from the user and returns it to the caller
+  # Gets the desired appointment date from the user and returns it to the caller.
   #
   # * *Args* :
   #
@@ -145,7 +147,7 @@ class Client
   end
 
   ##
-  # Gets the name desired doctors office from the user.
+  # Gets the name of the desired dentist office from the user.
   #
   # * *Args* :
   #
@@ -235,11 +237,11 @@ class Client
     return false
   end
 
-  def valid_doctor?(doctor_name)
-    doctors = Doctors.new
-    return doctors.doctor_exists?(doctor_name)
-  end
-
+  ##
+  # Tells the caller whether or not an appointment is valid.
+  #
+  # * *Args* :
+  #   - +appointment_type_string+ -> the type of the appointment being checked against
   def valid_appointment_type?(appointment_type_string)
     appointment = Appointments.new
     return appointment.appointment_type_exists?(appointment_type_string)
@@ -288,6 +290,14 @@ class Client
     return time_array
   end
 
+  ##
+  # recieves a multiline message from the socket and parses it
+  #
+  # * *Args* :
+  #   - +socket+ -> the socket the program is connecting to.
+  #
+  # * *Returns* :
+  #   - the message
   def receive_multi_line_message(socket)
     message = []
     line = ""

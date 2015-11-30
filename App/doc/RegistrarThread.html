@@ -75,9 +75,19 @@
     
     <li ><a href="#method-c-new">::new</a>
     
-    <li ><a href="#method-i-get_office_port">#get_office_port</a>
+    <li ><a href="#method-i-add_appointment">#add_appointment</a>
+    
+    <li ><a href="#method-i-receive_multi_line_message">#receive_multi_line_message</a>
+    
+    <li ><a href="#method-i-receive_single_line_message">#receive_single_line_message</a>
     
     <li ><a href="#method-i-run">#run</a>
+    
+    <li ><a href="#method-i-send_multi_line_message">#send_multi_line_message</a>
+    
+    <li ><a href="#method-i-send_single_line_message">#send_single_line_message</a>
+    
+    <li ><a href="#method-i-view_times">#view_times</a>
     
   </ul>
 </div>
@@ -111,6 +121,20 @@
     
 
     
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="END_OF_MESSAGE">END_OF_MESSAGE
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
 
     
 
@@ -140,9 +164,10 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 9</span>
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">client</span>)
   <span class="ruby-ivar">@client</span> = <span class="ruby-identifier">client</span>
+  <span class="ruby-ivar">@office</span> = <span class="ruby-constant">DentistOffice</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -162,11 +187,11 @@
        </header>
 
     
-      <div id="method-i-get_office_port" class="method-detail ">
+      <div id="method-i-add_appointment" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">get_office_port</span><span
-            class="method-args">(office_name)</span>
+          <span class="method-name">add_appointment</span><span
+            class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -175,24 +200,121 @@
 
         <div class="method-description">
           
-          <p>Helper method to retrieve a port given a specific office - written because
-dentist office is not functioning correctly</p>
+          <p>Add appointment</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="add_appointment-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_appointment</span>
+  <span class="ruby-identifier">message</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">receive_multi_line_message</span>(<span class="ruby-ivar">@client</span>)
+  <span class="ruby-identifier">destination</span> = <span class="ruby-ivar">@office</span>.<span class="ruby-identifier">get_office_destination</span>(<span class="ruby-identifier">message</span>[<span class="ruby-value">0</span>])
+  <span class="ruby-identifier">s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">destination</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">destination</span>[<span class="ruby-value">1</span>])
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">message</span>[<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">message</span>.<span class="ruby-identifier">length</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_multi_line_message</span>(<span class="ruby-identifier">s</span>, <span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">receive_single_line_message</span>(<span class="ruby-identifier">s</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_single_line_message</span>(<span class="ruby-ivar">@client</span>, <span class="ruby-identifier">response</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-receive_multi_line_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">receive_multi_line_message</span><span
+            class="method-args">(socket)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Receives a multi line message through the socket connection.</p>
 <ul><li>
 <p><strong>Args</strong> :</p>
 <ul><li>
-<p><code>office_name</code> -&gt; the name of the office being searched for</p>
+<p><code>socket</code> -&gt; the socket connection.</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>the message</p>
 </li></ul>
 </li></ul>
           
           
 
           
-          <div class="method-source-code" id="get_office_port-source">
-            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 71</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_office_port</span>(<span class="ruby-identifier">office_name</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">office_name</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;Office 1&#39;</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-value">2001</span>
+          <div class="method-source-code" id="receive_multi_line_message-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 124</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">receive_multi_line_message</span>(<span class="ruby-identifier">socket</span>)
+  <span class="ruby-identifier">message</span> = []
+  <span class="ruby-identifier">line</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">until</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">==</span> <span class="ruby-constant">END_OF_MESSAGE</span>
+    <span class="ruby-identifier">line</span> = <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-identifier">message</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">line</span>)
   <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">message</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-identifier">message</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-receive_single_line_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">receive_single_line_message</span><span
+            class="method-args">(socket)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Recieves a message from the socket that is a single line long</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+<ul><li>
+<p><code>socket</code> -&gt; the socket connection</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+<ul><li>
+<p>the message</p>
+</li></ul>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="receive_single_line_message-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">receive_single_line_message</span>(<span class="ruby-identifier">socket</span>)
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">gets</span>(<span class="ruby-identifier">message</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">message</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -217,61 +339,167 @@ dentist office is not functioning correctly</p>
 
         <div class="method-description">
           
-          <p>Handles the registrar&#39;s operations at a thread level</p>
+          <p>Handles the registrar&#39;s operations at a thread level.</p>
           
           
 
           
           <div class="method-source-code" id="run-source">
-            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 16</span>
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>
-  <span class="ruby-identifier">request</span> = []
-  <span class="ruby-identifier">result</span> = <span class="ruby-string">&quot;&quot;</span>
-  <span class="ruby-keyword">while</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
-    <span class="ruby-identifier">result</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">result</span>)
+  <span class="ruby-identifier">initial_request</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">initial_request</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;EXIT&#39;</span>
+    <span class="ruby-identifier">initial_request</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">initial_request</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;GET DENTIST OFFICE&#39;</span>
+        <span class="ruby-identifier">reply_to_request</span> = <span class="ruby-ivar">@office</span>.<span class="ruby-identifier">get_dentist_offices</span>
+        <span class="ruby-identifier">reply_to_request</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+        }
+        <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-constant">END_OF_MESSAGE</span>)
+      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;VIEW TIMES&#39;</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">view_times</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;ADD APPOINTMENT&#39;</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_appointment</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-string">&#39;EXIT&#39;</span>
+        <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">close</span>
+      <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">the_port</span> = <span class="ruby-value">2001</span>
-  <span class="ruby-identifier">s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&#39;localhost&#39;</span>, <span class="ruby-identifier">the_port</span>)
-  <span class="ruby-identifier">new_message</span> = <span class="ruby-identifier">request</span>[<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">request</span>.<span class="ruby-identifier">length</span>]
-  <span class="ruby-identifier">new_message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">s</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">server_response</span> = []
-  <span class="ruby-identifier">server_response_line</span>= <span class="ruby-string">&quot;&quot;</span>
-  <span class="ruby-keyword">until</span> <span class="ruby-identifier">server_response_line</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
-    <span class="ruby-identifier">server_response_line</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-    <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">server_response_line</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">server_response</span>
-  <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">request</span> = []
-  <span class="ruby-identifier">result</span> = <span class="ruby-string">&quot;&quot;</span>
-  <span class="ruby-keyword">while</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;End Of Message&quot;</span>
-    <span class="ruby-identifier">result</span> = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-    <span class="ruby-identifier">request</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">result</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">request</span>
-  <span class="ruby-identifier">the_port</span> =
-  <span class="ruby-identifier">s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">&#39;localhost&#39;</span>, <span class="ruby-identifier">the_port</span>)
-  <span class="ruby-identifier">new_message</span> = <span class="ruby-identifier">request</span>[<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">request</span>.<span class="ruby-identifier">length</span>]
-  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">new_message</span>
-
-  <span class="ruby-identifier">new_message</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">s</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">server_response</span> = []
-  <span class="ruby-identifier">server_response_line</span>= <span class="ruby-string">&quot;&quot;</span>
-  <span class="ruby-identifier">server_response_line</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
-  <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">server_response_line</span>)
-  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">server_response</span>
-  <span class="ruby-identifier">server_response</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">close</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-send_multi_line_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">send_multi_line_message</span><span
+            class="method-args">(socket, message)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sends a multi line message through the socket connection.</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+<ul><li>
+<p><code>socket</code> -&gt; the socket connection</p>
+</li><li>
+<p><code>message</code> -&gt; the message being sent</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="send_multi_line_message-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">send_multi_line_message</span>(<span class="ruby-identifier">socket</span>, <span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">line</span>)
+  }
+  <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-constant">END_OF_MESSAGE</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-send_single_line_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">send_single_line_message</span><span
+            class="method-args">(socket, message)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>sends a message to the socket that is one line long</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+<ul><li>
+<p><code>socket</code> -&gt; the socket connection</p>
+</li><li>
+<p><code>message</code> -&gt; the message being sent</p>
+</li></ul>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="send_single_line_message-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">send_single_line_message</span>(<span class="ruby-identifier">socket</span>, <span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">socket</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">message</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-view_times" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">view_times</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>communicates with the server and the user to give them the list of
+available times on a specific date</p>
+<ul><li>
+<p><strong>Args</strong> :</p>
+</li><li>
+<p><strong>Returns</strong> :</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="view_times-source">
+            <pre><span class="ruby-comment"># File registrar/registrar_thread.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">view_times</span>
+  <span class="ruby-identifier">message</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">receive_multi_line_message</span>(<span class="ruby-ivar">@client</span>)
+  <span class="ruby-identifier">destination</span> = <span class="ruby-ivar">@office</span>.<span class="ruby-identifier">get_office_destination</span>(<span class="ruby-identifier">message</span>[<span class="ruby-value">0</span>])
+  <span class="ruby-identifier">s</span> = <span class="ruby-constant">TCPSocket</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">destination</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">destination</span>[<span class="ruby-value">1</span>])
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">message</span>[<span class="ruby-value">1</span><span class="ruby-operator">...</span><span class="ruby-identifier">message</span>.<span class="ruby-identifier">length</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_multi_line_message</span>(<span class="ruby-identifier">s</span>, <span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">response</span> = <span class="ruby-identifier">receive_multi_line_message</span>(<span class="ruby-identifier">s</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_multi_line_message</span>(<span class="ruby-ivar">@client</span>, <span class="ruby-identifier">response</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           

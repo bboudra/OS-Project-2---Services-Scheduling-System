@@ -1,7 +1,20 @@
 require_relative '../App/client/client'
+
 ##
-# starts client operations
+# starts and controls the client operations
+#
+# * *Author* :
+#   - Benjamin Boudra ->
+#
 class ClientDriver
+
+  ##
+  # runs the client
+  #
+  # * *Args* :
+  #
+  # * *Returns* :
+  #
   def start_run
     client = Client.new
     puts 'Hello, welcome to the Services Scheduling System'

@@ -19,7 +19,7 @@ class DentistOffice
   ##
   # Retrieves the server port number for a given office
   #
-  def get_office_port(office_name)
+  def get_office_destination(office_name)
     @@lock.synchronize {
       @@office_list[office_name]
     }
@@ -39,7 +39,7 @@ class DentistOffice
   end
 
   ##
-  # Gets he list of doctors offices that communicate with the caller and returns them to the user
+  # Gets the list of doctors offices that communicate with the caller and returns them to the user.
   def get_dentist_offices()
     @@lock.synchronize {
       return @@office_list.keys
